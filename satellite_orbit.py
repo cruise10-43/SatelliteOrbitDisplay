@@ -8,6 +8,7 @@ import datetime
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
+
 def get_sat_tle_info():
     sat_list = skyfield.api.load.tle_file('https://celestrak.org/NORAD/elements/gnss.txt', reload=1)
     print(len(sat_list))
@@ -45,7 +46,6 @@ if __name__ == '__main__':
     # 描画エリアの作成
 
     anim = FuncAnimation(fig, update())
-
 
     # 描画
     plt.show()
