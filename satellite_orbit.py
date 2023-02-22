@@ -35,7 +35,7 @@ def update(impressions):
         z = np.append(z, [sat.at(edit_time).position.km[2]])
         param_hour = param_hour + 5
 
-    ax.scatter(x, y, z, s=2, c='red')
+    ax.scatter(x, y, z, s=3, c='blue')
 
 
 if __name__ == '__main__':
@@ -68,5 +68,7 @@ if __name__ == '__main__':
 
     anim = FuncAnimation(fig, update, frames=impressions, init_func=None, fargs=None, save_count=None, interval=1)
 
+    anim.save("orbit_test2.gif", writer="imagemagick")
     # 描画
-    plt.show()
+    #plt.show()
+    plt.close()
