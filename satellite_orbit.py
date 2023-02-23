@@ -8,7 +8,6 @@ import datetime
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
-
 def get_sat_tle_info():
     sat_list = skyfield.api.load.tle_file('https://celestrak.org/NORAD/elements/gnss.txt', reload=1)
     print(len(sat_list))
@@ -22,20 +21,23 @@ def update(impressions):
     param_hour = 0
     param_minute = 0
     param_second = 0
-    # 前のフレームの描画をクリアする。
-    ax.cla()
-    x = np.array([])
-    y = np.array([])
-    z = np.array([])
+
+    ax.set_xlim(-40000, 40000)
+    ax.set_ylim(-40000, 40000)
+    ax.set_zlim(-40000, 40000)
+
     for i in range(impressions):
+        # 前のフレームの描画をクリアする。
+        ax.cla()
         edit_time = ts.tt(param_year, param_month, param_day,
                           param_hour, param_minute, param_second)
-        x = np.append(x, [sat.at(edit_time).position.km[0]])
-        y = np.append(y, [sat.at(edit_time).position.km[1]])
-        z = np.append(z, [sat.at(edit_time).position.km[2]])
-        param_hour = param_hour + 5
+        x = sat.at(edit_time).position.km[0]
+        y = sat.at(edit_time).position.km[1]
+        z = sat.at(edit_time).position.km[2]
 
-    ax.scatter(x, y, z, s=3, c='blue')
+        ax.scatter(x, y, z, s=3, c='blue')
+        #ax.plot(x, y, z, c='blue', linestyle='-',zorder=2)
+        param_hour = param_hour + 5
 
 
 if __name__ == '__main__':
@@ -45,7 +47,7 @@ if __name__ == '__main__':
     ts = skyfield.api.load.timescale()
     sat = sats[0]
     base_time = datetime.datetime(2023, 2, 19, 12, 0, 0, 000)
-    impressions = 50
+    impressions = 150
 
     '''
     FuncAnimation() 引数
@@ -68,7 +70,7 @@ if __name__ == '__main__':
 
     anim = FuncAnimation(fig, update, frames=impressions, init_func=None, fargs=None, save_count=None, interval=1)
 
-    anim.save("orbit_test2.gif", writer="imagemagick")
+    #anim.save("orbit_test2.gif", writer="imagemagick")
     # 描画
-    #plt.show()
-    plt.close()
+    plt.show()
+    #plt.close()
